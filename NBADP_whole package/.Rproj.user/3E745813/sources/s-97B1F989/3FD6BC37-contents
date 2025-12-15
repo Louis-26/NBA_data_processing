@@ -1,0 +1,28 @@
+Package: NBADP
+Type: Package
+Title: NBA Data Processing
+Version: 0.1.0
+Author: Yi LU <121090386@link.cuhk.edu.cn>, Wei SHI <120040085@link.cuhk.edu.cn>, Yutong LIU <120040056@link.cuhk.edu.cn>
+Maintainer: Yi LU <121090386@link.cuhk.edu.cn>
+Description: A package to predict and visualize corresponding full reflection of the players' 
+    performance in games by analyzing NBA data. The data is provided, tell 'NBADP' to reflect the 
+    players' performance. Then we can give some prediction or guidance for the team.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+Imports: 
+    ggplot2,
+    readr,
+    dplyr,
+    corrplot
+Depends: 
+    R (>= 2.10)
+Suggests: 
+    roxygen2,
+    devtools,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3

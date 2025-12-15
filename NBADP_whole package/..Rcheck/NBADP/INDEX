@@ -1,0 +1,26 @@
+DataSalariesRaw         NBA_Salaries_1990_2023_
+DataScoreRaw            NBA_Player_Box_Score_Stats_1950_2022_
+GSW                     NBA Plays from 2022-2023 Season(GSW)
+Kawhi.Leonard.state.analysis
+                        analysis of state fluctuation of a superstar
+                        player: Kawhi Leonard
+Kawhi.img               An image of Kawhi Leonard
+PER                     Player Efficiency Rate
+X2021to2022data         2021-2022 NBA Player Stats: Per Game
+best_nba_player         Find the best NBA players based on their
+                        salaries and score stats
+datasets                NBA contract predict model datasets
+field_nba_player        Plot the field goal percentage (FGP) of NBA
+                        players for a given year and number of top
+                        players to display.
+lg                      NBA League Average data in each year
+nba_win_rate            Predict NBA Team Win Rate
+player_visual           Visualize a player's shot percentage and
+                        distribution on a season
+pred_salary             Make a salary forecast for 2023-2024
+shot                    NBA Shots Dataset(20211205)
+shot_visual             Visualize the 2 PT percentage and 3 PT
+                        percentage of all the players
+state.data.raw          Analyze the state change of Kawhi Leonard the
+                        state fluctuation of Kawhi Leonard each month,
+                        from 2022 October to 2023 April

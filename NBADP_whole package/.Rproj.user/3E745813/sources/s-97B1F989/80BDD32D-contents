@@ -1,0 +1,256 @@
+---
+title: "NBA-Data-Processing"
+author: "Yi LU <121090386@link.cuhk.edu.cn>, Wei SHI <120040085@link.cuhk.edu.cn>, Yutong LIU <120040056@link.cuhk.edu.cn>"
+date: "04/05/2023"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{NBA-Data-Processing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 4,
+  fig.align = "center"
+)
+```
+
+
+**NBADP** is a package to predict and visualize corresponding full reflection of the players' performance in games by analyzing NBA data. The data is provided, tell 'NBADP' to reflect the players' performance. Then we can give some prediction or guidance for the team.
+
+
+--------------------------------------
+
+# Variable Calculation
+## 1. PER (Player Efficiency Rate)
+
+  The Player Efficiency Rate (PER) is a per-minute rating developed by ESPN.com columnist John Hollinger. In John's words, "The PER sums up all a player's positive accomplishments, subtracts the negative accomplishments, and returns a per-minute rating of a player's performance." In this process, it helps to rate every player's statistical performance into a certain numerical value for helping people to know corresponding player's level.
+  
+  All calculations begin with unadjusted PER (uPER). The formula is:
+
+$$uPER = (1 / MP) * [3P + (2/3) * AST + (2 - factor * (teamAST / teamFG)) * FG$$
+$$+ (FT * 0.5 * (1 + (1 - (teamAST /teamFG)) + (2/3) * (teamAST / teamFG)))$$ 
+$$- VOP * TOV - VOP * DRB% * (FGA - FG) - VOP * 0.44 * (0.44 + (0.56 * DRB\%))$$ 
+$$* (FTA - FT) + VOP * (1 - DRB\%) * (TRB - ORB) + VOP * DRB% * ORB + VOP * STL$$ 
+$$+ VOP * DRB\% * BLK - PF * ((lgFT / lgPF) - 0.44 * (lgFTA / lgPF) * VOP)]$$
+
+
+where $factor$, $VOP$, and $DRB\%$ are:
+
+- $factor = (2/3) - (0.5 * (lgAST / lgFG)) / (2 * (lgFG / lgFT))$
+\n
+- $VOP = lgPTS / (lgFGA - lgORB + lgTOV + 0.44 * lgFTA)$
+\n
+- $DRB\% = (lgTRB - lgORB) / lgTRB$
+
+
+After $uPER$ is calculated, an adjustment must be made for the team is pace. The pace adjustment is:
+  
+$$pace adjustment = lgPace / teamPace$$\n
+
+
+The $pace adjustment$ is made to aPER:
+  
+$$aPER = (pace adjustment) * uPER$$
+
+
+Finally, we can get the PER:
+
+$$PER = aPER * (15 / lgaPER)$$
+
+### `PER(lgdata, regulardata, yrs, player1, team)`
+
+  The function `PER` in the package is designed to output the Player Efficiency Rate (PER) by inputting datasets with corresponding variables. `lgdata` is the dataset of league data and `regulardata` is the dataset of regular season data. 
+```{r q1}
+library(NBADP)
+PER(lgdata = lg, regulardata = X2021to2022data, yrs = "2021-22", "LeBron James","LAL")
+```
+
+From observing the return number, it shows that the LeBron James's PER is 26.25731 in 2021-22 regular season. A league-average PER is 15.00. This gives us a sense of what sort of level that LeBron James's abilities might fall into in NBA.
+
+--------------------------------------
+
+# Prediction
+## 1. Salary Prediction Function
+
+  In order to predict the NBA player's salary, we use linear regression model to setup the salary prediction function. Choosing the 2021-2022 season player's performance dataset (per game and advanced) and 2022-2023 season player's contract dataset to do the data cleaning for getting the final dataset: `datasets`, we make 2023-2024 salary prediction for those players with no contract data yet. In this process, we use different methods to investigate the effective variables.
+  
+  First, we do the correlation check
+```{r q1a}
+library(corrplot)
+numericVar <- which(sapply(datasets, FUN = is.numeric))
+numVarNames <- names(numericVar)
+datasetnumVar <- datasets[, numericVar]
+cor_Mat <- cor(datasetnumVar, use = "pairwise.complete.obs")
+cor_names <- names(sort(cor_Mat[, "salarya"], decreasing = TRUE))[1:20]
+cor_Mat <- cor_Mat[cor_names, cor_names]
+corrplot.mixed(cor_Mat, tl.pos = "lt")
+```
+From observing the left side of the plot, we can see the descending order of the correlation between different variables and `salarya` variable. We can see that the `TOV` is the most correlated variables with the `salarya`, which can be speculate that the players with more turnover rate is more important to the team. However, since we only make the model for those players that don't have contract data yet, the speculation is not that concrete.
+
+  Then, we do the scatter plot with regression line
+```{r q1b}
+library(ggplot2)
+ggplot(data = datasets, aes(x = TOV, y = salarya)) + geom_point() + 
+  geom_smooth(formula = y ~ x, method = "loess")
+```
+
+it shows a clear positive linear correlation between `salarya` and `TOV`.
+
+  Finally, we confirm the effective variables. Since some variables have high multicollinearity with each other, we drop them from the prediction model. Finally, we use the effective variables to make the prediction function.
+`pred_salary(turn_over, points_per_game, two_point_field_goal_attempts_per_game, free_throws_per_game, assists_per_game, games_started,value_over_replacement_player, defensive_rebounds_per_game, minutes_played_per_game, three_point_field_goal_attempts_per_game, usage_percentage, offensive_box_plusorminus, defensive_win_shares)`
+
+The function is designed to output the 2023-2024 season salary (in dollars) for players with no contract data yet.
+```{r q1c}
+library(NBADP)
+pred_salary(0.6, 3.9, 2.1, 0.4, 1.4, 6, 0, 0.8, 13.4, 1.4, 13.4, -2.9, 0.6)
+```
+Therefore, the 2023-2024 prediction salary for this player Aaron Holiday with this level of ability will be $2400421.
+
+  Limitation: Since this salary prediction model is made by linear regression and the player's performance, it still exists shortage in salary prediction. For example, except for the player's personal ability, some players have large potential business value in social media. This kind of value also will demenstrate in his contract so that it might have higher actual salary than the predict salary.
+
+
+## 2. NBA team win rate prediction
+The `nba_win_rate()` function is designed to predict the win rate of NBA teams for a given year. The function takes two optional arguments: `year`, which is the year for which we want to predict the win rate (default is 2023), and `desc`, which determines the sort order of the output (default is TRUE). 
+
+The function reads data from a CSV file containing NBA player box score statistics from 2010 to 2022. It then filters the data to include only teams that existed in 2022 and calculates the win rate for each team in each season. The function uses linear regression to predict the win rate for each team in the specified year and sorts the output based on the predicted win rate (by default, in descending order). Finally, the function generates a bar chart showing the predicted win rate and the historic win rate for each team.
+
+For example, if we call the function
+```{r q2a}
+nba_win_rate(year = 2024, desc = TRUE)
+```
+it will calculate and plot the predicted win rate for each NBA team for the year 2024, based on historical win rate data. The `desc` parameter is set to `TRUE`, which means that the results will be plotted in descending order based on the predicted win rate.
+
+
+## 3. Analyze the top players of the best cost–performance ratio
+Th feunction is called `best_nba_player` and its purpose is to find the top NBA players based on their salaries and performance statistics in a given year. 
+
+To use the function, you need to provide two arguments: `top` and `year`. The `top` argument specifies the number of top players you want to find, and the `year` argument specifies the year for which you want to find the top players. 
+
+The function first reads in two data files, `NBA Salaries(1990-2023).csv` and `NBA Player Box Score Stats(1950 - 2022).csv`, and cleans the data to remove unnecessary columns and convert certain columns to numeric values. It then filters the data to only include information for the specified year, groups the data by player name, and calculates each player's score (number of wins) for that year.
+
+The function then joins the salary and score data together, calculates a cost per point (salary divided by score), removes any infinite or missing values, and finally returns the top `top` players based on their cost per point.
+
+For example,
+```{r q3a}
+best_nba_player(top = 4, year = 2021)
+```
+would return the names of the top 4 NBA players in 2021 based on their cost per point.
+
+
+--------------------------------------
+
+# Visualization
+## 1.NBA Shot Visualization
+ 
+  The function `shot_visual` is help to visualize the 2PT percentage and 3PT percentage of all the players of one side of team in one match (include four quarters). 
+  
+### `shot_visual(data1, team1,opponent1)`
+
+  The `data1` is the dataset that contain all match data of the day. Then, input the 3 letter abbreviation of the team and the non-home team of this match. Then, the function can helps us to visualize the shot situation in that match.
+```{r q21a}
+shot_visual(data1 = shot, team1 = "NOP",opponent1 = "NOP")
+```
+From observing the plot, we can see the 2PT and 3PT shoting situation in one match. The ball beyond the three-point line is the 3PT shot, and the ball inside the three-point line is the 2PT shot. 
+
+
+## 2. Visualize NBA Player's Performance in a Season
+
+  The function `player_visual` is devote to visualize a player's shot percentage and distribution on certain regular season. In this process, it collects the player's shot performance and the shot position of the whole season.
+
+### `player_visual(teamdata, playerName, teamName)`
+
+
+The `teamdata` is all the data that the player's team has played throughout the season. The `playerName` is the player that we want to visualize (and the format of the given name need to be one letter abbreviation), and the `teamName` is the team that the player belong to.
+```{r q22a}
+player_visual(teamdata = GSW,"S. Curry","GSW")
+```
+We use the GSW team as an dataset example to visualize Stephen Curry's shot performance in the 2022-2023 regular season. The plot shows that the shot score he got. Then, we can see that he has lots of shoting chance. Even more interesting is that Curry has some shots that is far beyond the three-point line though there is one success. It can be seen how Curry's shot performance is.
+
+
+## 3. Analyze and visualize the field goal percentage of the player
+The code defines a function called "field_nba_player" that reads NBA player box score stats data, calculates each player's field goal percentage (FGP) and game played (G) in a specified season, and creates a bar chart showing the top players with the highest FGP. The function takes three optional arguments: "index" (number of players to display), "year" (season to calculate stats for), and "desc" (whether to sort the results in descending order by FGP and G or not).
+
+To use this function, we need to call the function with the desired arguments, and it will return a bar chart with player names on the y-axis and their FGP on the x-axis. The bar height represents the FGP, and the color of the bar represents the same value (from 0 to 1). The label above each bar represents the number of games played by that player in the specified season.
+
+For example, if we call the function,
+```{r q23a}
+field_nba_player(index = 30, year = 2021, desc = TRUE)
+```
+it will display a bar chart of the top 30 NBA players in the 2021 season with the highest FGP. The y-axis shows the player names, and the x-axis represents the FGP value ranging from 0 to 1. Each bar represents a player's FGP, and its height indicates the value. The color of the bar also shows the same value, where a darker color indicates a higher FGP. The number above each bar represents the number of games that player played in the specified season.
+
+## 4 Analysis of the state fluctuation
+We will have an analysis of state fluctuation of a superstar player: Kawhi Leonard,
+in terms of the player's performance state change or fluctuation during the regular season each month.
+
+The motivation of this function is that Leonard, as a superstar just recovered from injury at the beginning of 2022-2023 season.
+At first, he just tried to find his state and he didn't play very well.
+However, when he has played some games, he gradually showed the performance that he should have and played much better. As a result, it is very meaningful and necessary to generate some plots regarding his performance with respect to different attributes. The attributes to be displayed can be selected by users. They include "GP W L MIN PTS FGM FGA FG% 3PM 3PA 3P% FTM FTA FT% OREB	DREB REB AST TOV STL	BLK PF FP DD2 TD3 BPM".
+When you input, please add "X" if you choose "3PM" "3PA" or "3P%", meanwhile, replace all the "%" with "." when you input.
+
+We will examine how his states changes for different months, from 2022 October to 2023 April. The month range can also be selected by users. Namely, the user can just select part of the month range.
+
+Finally, we will produce several plots to visualize his performance fluctuation, for different attributes.
+
+
+```{r, q4a}
+library(NBADP)
+Kawhi.Leonard.state.analysis(
+  data.category = c("MIN", "PTS", "REB", "FGM"),
+  month.range = c("October", "November", "December", "January", "February", "March","April")
+)
+```
+
+
+
+
+--------------------------------------
+# Conclusion
+## 1. Basic Plotting
+  Use ggplot2 to visualize the datasets. It gives us more intuitive feedback of what we want to see so that we can analyze it further. In the example of visualize player's shot performance. The usage of `ggplot` and `geom_point` use different color and size of point to visualize the real situation, which is more explicit than only check with abstract numeric data.
+  
+  
+## 2. Data Manipulation
+  Allow to collate the variables in different datasets for using. In the example of calculating PER, we need to use `names` command to rename the column name of the new created data frame. Also, we want to adding data frame by using `cbind` in the `pred_salary` to do the data preprocessing. 
+
+
+## 3. Linear Model
+  Allow to do the data analysis and make linear model prediction. In the example of predict NBA player's salary, we use the linear model and `predict` command to predict the player's salary in next season. It makes the predict process to be more efficient.
+
+
+## 4. Vectorized Operations
+  In function `best_nba_player()`, vectorized operations are used to manipulate the salary data.
+
+Here is the relevant code:
+```{r}
+DataSalariesRaw$salary <- as.numeric(gsub("[$,]", "", DataSalariesRaw$salary))
+DataSalariesRaw$inflationAdjSalary <- as.numeric(gsub("[$,]", "", DataSalariesRaw$inflationAdjSalary))
+```
+
+In the code above, `gsub()` is used to replace all occurrences of "$" and "," with an empty string, effectively removing them from the salary values. The function is applied to the entire `salary` and `inflationAdjSalary` columns at once using the `as.numeric()` function to convert the resulting strings to numeric values. By applying this function to the entire salary column at once, rather than looping over each value, the function is able to perform the operation much more efficiently.
+
+
+## 5. Formatted Output
+  In function `best_nba_player()`, we used the return() function to return a specific column from the final data frame, which simplifies the output of the function by only displaying the necessary information. This is an example of formatted output as it avoids redundant digits and simplifies information.
+
+For instance, in the line "return(DataAll$playerName)", it only returns the "playerName" column from the "DataAll" data frame, which contains the names of the top NBA players. This avoids returning unnecessary information such as their salaries or scores, which may not be relevant when calling the function.
+
+
+## 6. Logical Expression
+  In the function `field_nba_player()`, the `desc` argument is used as a logical expression to control the sorting of the final output data frame. The `if` statement checks whether the `desc` argument is true or false, and sorts the data frame in descending order of `FGP` and `G` if `desc` is true, and in ascending order of `FGP` and `G` if `desc` is false. 
+
+This use of logical expressions allows for more flexibility and customization in the function's output, as we can choose to sort the data frame in either ascending or descending order based on their needs.
+
+
+## 7. Piping
+  Take one return value and automatically feed it in as an input to another function to form a flow of results. In function `pred_salary`, since we need to `select` lots of variables in certain dataset, the pipe helps to make our code more readable and efficient. It renders us not to consider too much on the structure of command when there are lots of things need to be included.
+  
+  
+## 8. Iteration
+  In the function Kawhi.Leonard.state.analysis(), I use the for loop to help generate different plots. It is related to the iteration method. 
+For different attributes, it will generate different plots according to the selected month range. Then it will iterate all the variables that the user selects. 
+

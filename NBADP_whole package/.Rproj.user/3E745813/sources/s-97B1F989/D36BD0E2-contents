@@ -1,0 +1,344 @@
+#' NBA League Average data in each year
+#'
+#' A dataset containing the league average level in many different variables.
+#'  The variables are as follows:
+#'
+#' @format A data frame with 77 rows and 32 variables:
+#' \describe{
+#'   \item{Rk}{time ranking (1--77)}
+#'   \item{Season}{the year of NBA season (1946-47--2022-23)}
+#'   \item{Lg}{name of league (NBA)}
+#'   \item{Age}{the average age of the league in each year (26.1--27.9)}
+#'   \item{Ht}{average height of the league in each year (6-4--6-7)}
+#'   \item{Wt}{average weight of the league in each year (195--223)}
+#'   \item{G}{average number of games(192--1230)}
+#'   \item{MP}{minutes played per game (240.5--242.2)}
+#'   \item{FG}{field goals per game (25.9--45.9)}
+#'   \item{FGA}{field goal attempts per game (75.4--109.4)}
+#'   \item{3P}{3-point field goals per game (0.5--12.7)}
+#'   \item{3PA}{3-point field goal attempts per game (2.0--35.2)}
+#'   \item{FT}{free throws per game (15.9--28.6)}
+#'   \item{FTA}{free throw attempts per game (21.7--38.3)}
+#'   \item{ORB}{offensive rebounds per game (9.7--15.1)}
+#'   \item{DRB}{defensive rebounds per game (28.4--34.8)}
+#'   \item{TRB}{total rebounds per game (41.0--73.5)}
+#'   \item{AST}{assists per game (6.9--26.3)}
+#'   \item{STL}{steals per game (7.2--9.6)}
+#'   \item{BLK}{blocks per game (4.3--5.6)}
+#'   \item{TOV}{turnovers per game (13.8--20.8)}
+#'   \item{PF}{personal fouls per game (19.3--28.8)}
+#'   \item{PTS}{points per game (67.8--118.8)}
+#'   \item{FG\%}{field goals percentage (0.279--0.492)}
+#'   \item{3P\%}{3-point field goals percentage (0.238--0.367)}
+#'   \item{FT\%}{free throw percentage (0.641--0.782)}
+#'   \item{Pace}{pace factor: an estimate of possessions per 48 minutes (88.9--107.8)}
+#'   \item{eFG\%}{effective field goal percentage: This statistic adjusts for the
+#'     fact that a 3-point field goal is worth one more point that a 2-point field
+#'     goal (0.279--0.545)}
+#'   \item{TOV\%}{turnover percentage: an estimate of turnovers committed per 100
+#'     plays (12.3--16.5)}
+#'   \item{ORB\%}{offensive rebound percentage: an estimate of the percentage of
+#'     available offensive rebounds a player grabbed while they were on the floor
+#'     (22.2--33.5)}
+#'   \item{FT/FGA}{free throws per field goal attempt (0.171--0.333)}
+#'   \item{ORtg}{offensive rating: an estimate of points produced (players) or
+#'     scored (teams) per 100 possessions (97.7--114.8)}
+#' }
+"lg"
+
+
+#' 2021-2022 NBA Player Stats: Per Game
+#'
+#' A dataset containing each player's details performance data in the 2021-2022
+#'  NBA regular season. The variables are as follows:
+#'
+#'  @format A data frame with 812 rows and 31 variables:
+#'  \describe{
+#'    \item{Rk}{player ranking (1--605)}
+#'    \item{Player}{player name}
+#'    \item{Pos}{position}
+#'    \item{Age}{player's age (19--41)}
+#'    \item{Tm}{3 letter abbreviation of the team}
+#'    \item{G}{number of games that the player join in (1-82)}
+#'    \item{GS}{game started (0--82)}
+#'    \item{MP}{minutes played per game(1--2854)}
+#'    \item{FG}{field goals per game (0--774)}
+#'    \item{FGA}{field goal attempts per game (0--1564)}
+#'    \item{FG\%}{field goal percentage (0--1)}
+#'    \item{3P}{3-point field goals per game (0--285)}
+#'    \item{3PA}{3-point field goal attempts per game (0--750)}
+#'    \item{3P\%}{3-point field goal percentage (0--1)}
+#'    \item{2P}{2-point field goals per game (0--724)}
+#'    \item{2PA}{2-point field goal attempts per game (0--1393)}
+#'    \item{2P\%}{2-point field goal percentage (0--1)}
+#'    \item{eFG\%}{effective field goal percentage: This statistic adjusts for the
+#'     fact that a 3-point field goal is worth one more point that a 2-point field
+#'     goal (0--1)}
+#'    \item{FT}{free throws per game (0--654)}
+#'    \item{FTA}{free throw attempts per game (0--803)}
+#'    \item{FT\%}{free throw percentage (0--1)}
+#'    \item{ORB}{offensive rebounds per game (0--349)}
+#'    \item{DRB}{defensive rebounds per game (0--813)}
+#'    \item{TRB}{total rebounds per game (0--1019)}
+#'    \item{AST}{assists per game (0--737)}
+#'    \item{STL}{steals per game (0--138)}
+#'    \item{BLK}{blocks per game (0--177)}
+#'    \item{TOV}{turnovers per game (0--303)}
+#'    \item{PF}{personal fouls per game (0--286)}
+#'    \item{PTS}{points per game (0--2155)}
+#'    \item{Player-additional}{additional information}
+#' }
+"X2021to2022data"
+
+
+#' NBA Shots Dataset(20211205)
+#'
+#' A dataset containing the competition performance on date 2021/12/05.
+#'  The variables are as follows:
+#'
+#' @format A data frame with 690 rows and 16 variables:
+#' \describe{
+#'   \item{ ...1}{variable ranking}
+#'   \item{Unnamed: 0}{variable ranking}
+#'   \item{Unnamed: 0.1}{variable ranking}
+#'   \item{match_id}{game identifier. Unique for each matchup}
+#'   \item{shotX}{x coordinate of the shot position}
+#'   \item{shotY}{y coordinate of the shot position}
+#'   \item{quarter}{quarter of the game}
+#'   \item{time_remaining}{time remaining in the quarter}
+#'   \item{player}{name of the player who took the shot}
+#'   \item{team}{3 letter abbreviation of the attacking team}
+#'   \item{made}{whether the shot resulted in a made basket or not}
+#'   \item{shot_type}{2-pointer or 3-pointer}
+#'   \item{distance}{Distance (in ft) of shot from the basket. Dunks count as
+#'    shots made from 0 distance}
+#'   \item{score}{game score after the shot}
+#'   \item{opp}{3 letter abbreviation of the defending team}
+#'   \item{status}{situation of score (tied,trials,leads)}
+#' }
+"shot"
+
+#' NBA Plays from 2022-2023 Season(GSW)
+#'
+#' A dataset containing GSW competition performance on 2022-2023 Season. The
+#'  variables are as follows:
+#'
+#' @format A data frame with 40112 rows and 19 variables:
+#' \describe{
+#'   \item{game_id}{Game ID}
+#'   \item{period}{Period of Play}
+#'   \item{clock}{Game-clock at time of play}
+#'   \item{home}{home team}
+#'   \item{scoreHome}{Home team points at time of play}
+#'   \item{away}{Away team}
+#'   \item{scoreAway}{Away team points at time of play}
+#'   \item{playerNameI}{Player making the play}
+#'   \item{teamTricode}{Team of the player making the play}
+#'   \item{description}{The description of the play}
+#'   \item{actionType}{What kind of play}
+#'   \item{subType}{A more detailed description of an actionType}
+#'   \item{xLegacy}{The horizontal position of a player's shot}
+#'   \item{yLegacy}{The vertical position of a player's shot}
+#'   \item{shotDistance}{The distance from the basket of a field goal}
+#'   \item{isFieldGoal}{Whether the play is or isn't a field goal}
+#'   \item{shotVal}{The number of points that could be scored from a play}
+#'   \item{scoreVal}{The number of points that were scored on a play}
+#'   \item{location}{Which side of the court the play occurred}
+#' }
+"GSW"
+
+
+#' NBA contract predict model datasets
+#'
+#' A dataset containing the players' 2022-2023 salary and 2021-2022 NBA
+#'  performance data. Also, those players are not have accurate contract for next
+#'  season yet. The variables are as follows:
+#'
+#' @format A data frame with 128 rows and 51 variables:
+#' \describe{
+#'   \item{Player}{player name}
+#'   \item{salarya}{contract's salary in 2022-2023}
+#'   \item{Guaranteed}{the amount of a player's remaining salary that is
+#'    guaranteed}
+#'   \item{Pos}{position}
+#'   \item{Age}{player's age}
+#'   \item{G}{games}
+#'   \item{MP}{minutes played}
+#'   \item{PER}{player efficiency rating: a measure of per-minute production
+#'    standardized such that the league average is 15 (-45.2--76.2)}
+#'   \item{TSp}{true shooting percentage: a measure of shooting efficiency that
+#'    takes into account 2-point field goals, 3-point field goals, and free throw}
+#'   \item{X3PAr}{3-point attempt rate: percentage of FG attempts from 3-point
+#'    range}
+#'   \item{FTr}{Free Throw attempt rate: number of FT attempts per FG attempt}
+#'   \item{ORBp}{Offensive Rebound Percentage: an estimate of the percentage of
+#'    available offensive rebounds a player grabbed while they were on the floor}
+#'   \item{DRBp}{Defensive Rebound Percentage: an estimate of the percentage of
+#'    available defensive rebounds a player grabbed while they were on the floor}
+#'   \item{TRBp}{Total Rebound Percentage: an estimate of the percentage of
+#'    available rebounds a player grabbed while they were on the floor}
+#'   \item{ASTp}{Assist Percentage: an estimate of the percentage of teammate
+#'    field goals a player assisted while they were on the floor}
+#'   \item{STLp}{Steal Percentage: an estimate of the percentage of opponent
+#'    possessions that end with a steal by the player while they were on the floor}
+#'   \item{BLKp}{Block Percentage: an estimate of the percentage of opponent
+#'    two-point field goal attempts blocked by the player while they were on the
+#'    floor}
+#'   \item{TOVp}{Turnover Percentage: an estimate of turnovers committed per 100
+#'    plays}
+#'   \item{USGp}{Usage Percentage: an estimate of the percentage of team plays
+#'    used by a player while they were on the floor}
+#'   \item{OWS}{Offensive Win Shares: an estimate of the number of wins
+#'    contributed by a player due to offense}
+#'   \item{DWS}{Defensive Win Shares: an estimate of the number of wins
+#'    contributed by a player due to defense}
+#'   \item{WS}{Win Shares: an estimate of the number of wins contributed by a
+#'    player}
+#'   \item{WSd48}{Win Shares Per 48 Minutes}{an estimate of the number of wins
+#'    contributed by a player per 48 minutes (league average is approximately
+#'    .100)}
+#'   \item{OBPM}{Offensive Box Plus/Minus: a box score estimate of the offensive
+#'    points per 100 possessions a player contributed above a league-average
+#'    player, translated to an average team}
+#'   \item{DBPM}{Defensive Box Plus/Minus: a box score estimate of the defensive
+#'    points per 100 possessions a player contributed above a league-average
+#'    player, translated to an average team}
+#'   \item{BPM}{Box Plus/Minus: a box score estimate of the points per 100
+#'    possessions a player contributed above a league-average player, translated
+#'    to an average team}
+#'   \item{VORP}{Value over Replacement Player: a box score estimate of the
+#'    points per 100 Team possessions that a player contributed above a
+#'    replacement-level (-2.0) player, translated to an average team and prorated
+#'    to an 82-game season}
+#'   \item{GS}{game started}
+#'   \item{FG}{field goals per game}
+#'   \item{FGA}{field goal attempts per game}
+#'   \item{FGp}{field goal percentage}
+#'   \item{X3P}{3-point field goals per game}
+#'   \item{X3PA}{3-point field goal attempts per game}
+#'   \item{X3Pp}{3-point field goal percentage}
+#'   \item{X2P}{2-point field goals per game}
+#'   \item{X2PA}{2-point field goal attempts per game}
+#'   \item{X2Pp}{2-point field goal percentage}
+#'   \item{eFGp}{effective field goal percentage: This statistic adjusts for the
+#'     fact that a 3-point field goal is worth one more point that a 2-point field
+#'     goal}
+#'   \item{FT}{free throws per game}
+#'   \item{FTA}{free throw attempts per game}
+#'   \item{FTp}{free throw percentage}
+#'   \item{ORB}{offensive rebounds per game}
+#'   \item{DRB}{defensive rebounds per game}
+#'   \item{TRB}{total rebounds per game}
+#'   \item{AST}{assists per game}
+#'   \item{STL}{steals per game}
+#'   \item{BLK}{blocks per game}
+#'   \item{TOV}{turnovers per game}
+#'   \item{PF}{personal fouls per game}
+#'   \item{PTS}{points per game}
+#' }
+"datasets"
+
+
+#' Analyze the state change of Kawhi Leonard
+#' the state fluctuation of Kawhi Leonard each month, from 2022 October to 2023 April
+#'
+#' A data set containing different attributes of Kawhi Leonard in those months.
+#' The variables are as follows.
+#'
+#' @format a data frame with 7 rows and 30 variables:
+#' \describe{
+#'   \item{Player}{the name of the player(Kawhi Leonard)}
+#'   \item{Month}{the month that he plays(October--April)}
+#'   \item{TEAM}{the team that Kawhi Leonard plays for(LAC)}
+#'   \item{AGE}{the age of Kawhi Leonard(31)}
+#'   \item{GP}{the number of games that Kawhi Leonard plays}
+#'   \item{W}{the number of games that Kawhi Leonard wins}
+#'   \item{L}{the number of games that Kawhi Leonard loses}
+#'   \item{MIN}{the average time that Kawhi Leonard plays per game}
+#'   \item{PTS}{the average points that Kawhi Leonard gets per game}
+#'   \item{FGM}{the average field goals that Kawhi Leonard made per game}
+#'   \item{FGA}{the average field goals that Kawhi Leonard attempted per game}
+#'   \item{FG\%}{the average field goal percentage of Kawhi Leonard per game}
+#'   \item{3pM}{the average three point field goals that Kawhi Leonard made per game}
+#'   \item{3pA}{the average three point field goals that Kawhi Leonard attempted per game}
+#'   \item{3p\%}{the average three point field percentage percentage of Kawhi Leonard per game}
+#'   \item{FTM}{the average free throws that Kawhi Leonard made per game}
+#'   \item{FTA}{the average free throws that Kawhi Leonard attempted per game}
+#'   \item{FT\%}{the average free throw percentage of Kawhi Leonard per game}
+#'   \item{OREB}{the average offensive rebounds that Kawhi Leonard gets per game}
+#'   \item{DREB}{the average defensive rebounds that Kawhi Leonard gets per game}
+#'   \item{REB}{the average total rebounds that Kawhi Leonard gets per game}
+#'   \item{AST}{the average assists that Kawhi Leonard gets per game}
+#'   \item{TOV}{the average turnovers that Kawhi Leonard makes per game}
+#'   \item{STL}{the average steals that Kawhi Leonard gets per game}
+#'   \item{BLK}{the average blocks that Kawhi Leonard gives per game}
+#'   \item{PF}{the average personal fouls that Kawhi Leonard has per game}
+#'   \item{FP}{the average fantasy points that Kawhi Leonard has per game}
+#'   \item{DD2}{the number of double doubles that Kawhi Leonard has in the month}
+#'   \item{TD3}{the number of triple doubles that Kawhi Leonard has in the month}
+#'   \item{BPM}{the value of Plus-Minus of Kawhi Leonard per game}
+#' }
+"state.data.raw"
+
+
+#' NBA_Salaries_1990_2023_
+#'
+#' A dataset containing NBA players' salaries from 1990 to 2023. The variables are as follows:
+#'
+#' @format A data frame with 15857 rows and 5 variables:
+#' \describe{
+#'   \item{...1}{variable ranking}
+#'   \item{playerName}{player name}
+#'   \item{seasonStartYear}{the starting year of an NBA season}
+#'   \item{salary}{the actual salary of an NBA player}
+#'   \item{inflationAdjSalary}{the salary adjusted for inflation}
+#' }
+"DataSalariesRaw"
+
+
+#' NBA_Player_Box_Score_Stats_1950_2022_
+#'
+#' A dataset collected from box scores, containing detailed statistics on individual player performances in NBA games from 1950 to 2022.
+#' The variables are as follows:
+#'
+#' @format A data frame with 25080 rows and 29 variables:
+#' \describe{
+#'   \item{...1}{variable ranking}
+#'   \item{Season}{the season in which the game was played}
+#'   \item{Game_ID}{a unique identifier for each game}
+#'   \item{PLAYER_NAME}{the name of the player}
+#'   \item{Team}{the team the player played for}
+#'   \item{GAME_DATE}{the date the game was played}
+#'   \item{MATCHUP}{the matchup of the game}
+#'   \item{WL}{the outcome of the game for the player's team}
+#'   \item{MIN}{the number of minutes the player played in the game}
+#'   \item{FGM}{the number of field goals made by the player}
+#'   \item{FGA}{the number of field goals attempted by the player}
+#'   \item{FG_PCT}{the player's field goal percentage (FGM/FGA)}
+#'   \item{FG3M}{the number of three-point field goals made by the player}
+#'   \item{FG3A}{the number of three-point field goals attempted by the player}
+#'   \item{FG3_PCT}{the player's three-point field goal percentage (FG3M/FG3A)}
+#'   \item{FTM}{the number of free throws made by the player}
+#'   \item{FTA}{the number of free throws attempted by the player}
+#'   \item{FT_PCT}{the player's free throws attempted by the player}
+#'   \item{OREB}{the number of offensive rebounds the player had in the game}
+#'   \item{DREB}{the numbver of defensive rebounds the player had in the game}
+#'   \item{REB}{the total number of rebounds the player had in the game}
+#'   \item{AST}{the number of assists the player had in the game}
+#'   \item{STL}{the number of steals the player had in the game}
+#'   \item{BLK}{the number of blocks the player had in the game}
+#'   \item{TOV}{the number of turnovers the player had in the game}
+#'   \item{PF}{the number of personal fouls the player scored in the game}
+#'   \item{PTS}{the total number of points the player scored in the game}
+#'   \item{PLUS_MINUS}{the point differential when the player was on the court}
+#'   \item{VIDEO_AVAILABLE}{a flag indicating whether or not video of the game is available for analysis}
+#' }
+"DataScoreRaw"
+
+
+#' An image of Kawhi Leonard
+#' @format a png file
+"Kawhi.img"
+
+
+

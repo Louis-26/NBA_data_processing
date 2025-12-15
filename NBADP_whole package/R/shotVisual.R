@@ -1,0 +1,56 @@
+#' Visualize the 2 PT percentage and 3 PT percentage of all the players
+#'
+#' The plot that show the corresponding match shot result
+#'
+#' @param team1 string, input the team that we want to visualize
+#' @param opponent1 string, input the non-home team of this match
+#' @param data1 dataset, dataset that contains all match data of the day
+#'
+#' @return plot, containing the situation of whether the basketball shot is in
+#' or out
+#'
+#' @import readr ggplot2
+#'
+#' @examples
+#' library(NBADP)
+#' shot_visual(data1 = shot, team1 = "NOP",opponent1 = "NOP")
+#'
+#' @export
+
+shot_visual = function(data1 = shot, team1,opponent1) {
+  #data("shot")
+  data <- x <- y <- shotX <- shotY <- made <- NULL
+  #shot <- read_csv(data)
+  shot <- data1
+  shot <- shot[, -(1:3)]
+  shot$opponent <- substr(shot$opp,2,4)
+  visual_part = data.frame(subset(shot, (shot$team == team1 & shot$opponent == opponent1)))
+
+  ggplot(data=data.frame(x=1,y=1),aes(x,y))+
+    #out-field:
+    geom_path(data=data.frame(x=c(0,0,50,50,0),y=c(0,47,47,0,0)))+
+    #half-court line:
+    geom_path(data=data.frame(x=c(0,50),y=c(0,0)))+
+    #half-court semicircle:
+    geom_path(data=data.frame(x=c((-6000:(-1)/1000)+25,(1:6000/1000)+25),y=-c(sqrt(6^2-c(-6000:(-1)/1000,1:6000/1000)^2))+47),aes(x=x,y=y))+
+    #solid FT semicircle above FT line:
+    geom_path(data=data.frame(x=c((-6000:(-1)/1000)+25,(1:6000/1000)+25),y=-c(28-sqrt(6^2-c(-6000:(-1)/1000,1:6000/1000)^2))+47),aes(x=x,y=y))+
+    #dashed FT semicircle below FT line:
+    geom_path(data=data.frame(x=c((-6000:(-1)/1000)+25,(1:6000/1000)+25),y=-c(28+sqrt(6^2-c(-6000:(-1)/1000,1:6000/1000)^2))+47),aes(x=x,y=y),linetype='dashed')+
+    #key:
+    geom_path(data=data.frame(x=c(17,17,33,33,17),y=c(0,19,19,0,0)))+
+    #box inside the key:
+    geom_path(data=data.frame(x=c(19,19,31,31,19),y=c(0,19,19,0,0)))+
+    #restricted area semicircle:
+    geom_path(data=data.frame(x=c((-4000:(-1)/1000)+25,(1:4000/1000)+25),y=-c(41.25-sqrt(4^2-c(-4000:(-1)/1000,1:4000/1000)^2))+47),aes(x=x,y=y))+
+    #rim:
+    geom_path(data=data.frame(x=c((-750:(-1)/1000)+25,(1:750/1000)+25,(750:1/1000)+25,(-1:-750/1000)+25),y=c(c(5.25+sqrt(0.75^2-c(-750:(-1)/1000,1:750/1000)^2)),c(5.25-sqrt(0.75^2-c(750:1/1000,-1:-750/1000)^2)))),aes(x=x,y=y))+
+    #backboard:
+    geom_path(data=data.frame(x=c(22,28),y=c(4,4)),lineend='butt')+
+    #three-point line:
+    geom_path(data=data.frame(x=c(-22+25,-22+25,(-22000:(-1)/1000)+25,(1:22000/1000)+25,22+25,22+25),y=-c(47-47,(47-169/12)-47,(41.75-sqrt(23.75^2-c(-22000:(-1)/1000,1:22000/1000)^2))-47,(47-169/12)-47,47-47)),aes(x=x,y=y))+
+    #fix aspect ratio to 1:1
+    coord_fixed() +
+    geom_point(data = visual_part, aes(x = shotX, y = shotY, colour = made), alpha=0.3)
+}
+

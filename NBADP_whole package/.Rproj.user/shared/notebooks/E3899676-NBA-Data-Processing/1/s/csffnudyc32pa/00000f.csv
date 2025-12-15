@@ -1,0 +1,10 @@
+"0","library(corrplot)"
+"2","corrplot 0.92 loaded
+"
+"0","numericVar <- which(sapply(datasets, FUN = is.numeric))"
+"0","numVarNames <- names(numericVar)"
+"0","datasetnumVar <- datasets[, numericVar]"
+"0","cor_Mat <- cor(datasetnumVar, use = ""pairwise.complete.obs"")"
+"0","cor_names <- names(sort(cor_Mat[, ""salarya""], decreasing = TRUE))[1:20]"
+"0","cor_Mat <- cor_Mat[cor_names, cor_names]"
+"0","corrplot.mixed(cor_Mat, tl.pos = ""lt"")"
